@@ -76,27 +76,60 @@ const render = () => {
     ReactDOM.render(<App />, document.getElementById('root'));
 };
 
-const App = () => (
-    <div>
-        <h1>やること</h1>
+const InputContent = (props) => {
+    const content = props.content;
+    const updateContent = props.updateContent;
+    const tryAddTodo = props.tryAddTodo;
+    return (
         <p>
             <input type="text" placeholder="やることある？" value={content}
                 onChange={updateContent} onKeyPress={tryAddTodo} />
         </p>
-        <ul>
+    );
+};
+
+const TodoComponent = (props) => {
+    const todo = props.todo;
+    const updateStatus = props.updateStatus;
+    return (
+        <li>
+            <label>
+                <input type="checkbox" checked={todo.done}
+                    onChange={event => updateStatus(todo.id, event.target.checked)} />
+                <span>#{todo.id} {todo.content}</span>
+            </label>
+        </li>
+    );
+};
+
+const TodoListComponent = (props) => (
+    <ul>
+        {props.children}
+    </ul>
+);
+
+const ClearButton = (props) => (
+    <p>
+        <button onClick={props.clear}>終わったやつ消す</button>
+    </p>
+);
+
+const App = () => (
+    <div>
+        <h1>やること</h1>
+        <InputContent
+            content={content}
+            updateContent={updateContent}
+            tryAddTodo={tryAddTodo} />
+        <TodoListComponent>
             {todoList.list.map(todo => (
-                <li key={todo.id}>
-                    <label>
-                        <input type="checkbox" checked={todo.done}
-                            onChange={event => updateStatus(todo.id, event.target.checked)} />
-                        <span>#{todo.id} {todo.content}</span>
-                    </label>
-                </li>
+                <TodoComponent
+                    key={todo.id}
+                    todo={todo}
+                    updateStatus={updateStatus} />
             ))}
-        </ul>
-        <p>
-            <button onClick={clear}>終わったやつ消す</button>
-        </p>
+        </TodoListComponent>
+        <ClearButton clear={clear} />
     </div>
 );
 
