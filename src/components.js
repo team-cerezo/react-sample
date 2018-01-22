@@ -38,3 +38,9 @@ export const ClearButton = (props) => (
     </p>
 );
 
+export const About = () => (
+    <div>
+        <h1>これはなに？</h1>
+        <p>React + Flux + React Routerのサンプル</p>
+    </div>
+);
