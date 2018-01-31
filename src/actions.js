@@ -11,7 +11,7 @@ export const updateContent = event => {
 };
 
 export const tryAddTodo = event => {
-    const content = contentStore.state;
+    const content = contentStore.getState();
     if (content !== '' && event.key === 'Enter') {
         TodoDispatcher.dispatch({
             type: ActionTypes.ADD_TODO,

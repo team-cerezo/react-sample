@@ -1,14 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './component-structure';
-import { todoListStore, contentStore } from './store';
+import AppContainer from './container';
 
-const render = () => {
-    ReactDOM.render(<App />, document.getElementById('root'));
-};
-
-todoListStore.subscribe(render);
-contentStore.subscribe(render);
-
-render();
+ReactDOM.render(<AppContainer />, document.getElementById('root'));

@@ -1,30 +1,15 @@
+import { ReduceStore } from 'flux/utils';
+
 import TodoDispatcher from './dispatcher';
 import ActionTypes from './action-types';
 import { Todo, TodoList } from './models';
 
-class Store {
-    constructor(initialState) {
-        this.state = initialState;
-        this.listeners = [];
-        TodoDispatcher.register(payload => {
-            const newState = this.reduce(this.state, payload);
-            if (newState !== this.state) {
-                this.state = newState;
-                this.listeners.forEach(listener => listener());
-            }
-        });
-    }
-    subscribe(listener) {
-        this.listeners.push(listener);
-    }
-}
-
-class TodoListStore extends Store {
-    constructor() {
-        super(TodoList.empty()
+class TodoListStore extends ReduceStore {
+    getInitialState() {
+        return TodoList.empty()
             .add(Todo.create('環境構築').setDone(true))
             .add(Todo.create('JavaScriptチュートリアル'))
-            .add(Todo.create('Reactチュートリアル')));
+            .add(Todo.create('Reactチュートリアル'));
     }
     reduce(state, { type, payload }) {
         switch (type) {
@@ -46,11 +31,11 @@ class TodoListStore extends Store {
     }
 }
 
-export const todoListStore = new TodoListStore();
+export const todoListStore = new TodoListStore(TodoDispatcher);
 
-class ContentStore extends Store {
-    constructor() {
-        super('');
+class ContentStore extends ReduceStore {
+    getInitialState() {
+        return '';
     }
     reduce(state, { type, payload }) {
         switch (type) {
@@ -67,4 +52,4 @@ class ContentStore extends Store {
     }
 }
 
-export const contentStore = new ContentStore();
+export const contentStore = new ContentStore(TodoDispatcher);
