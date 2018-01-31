@@ -8,11 +8,11 @@ const App = () => (
     <div>
         <h1>やること</h1>
         <InputContent
-            content={contentStore.content}
+            content={contentStore.state}
             updateContent={updateContent}
             tryAddTodo={tryAddTodo} />
         <TodoListComponent>
-            {todoListStore.todoList.list.map(todo => (
+            {todoListStore.state.list.map(todo => (
                 <TodoComponent
                     key={todo.id}
                     todo={todo}

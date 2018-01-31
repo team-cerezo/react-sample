@@ -4,15 +4,15 @@ import { Todo, TodoList } from './models';
 
 class TodoListStore {
     constructor() {
-        this.todoList = TodoList.empty()
+        this.state = TodoList.empty()
             .add(Todo.create('環境構築').setDone(true))
             .add(Todo.create('JavaScriptチュートリアル'))
             .add(Todo.create('Reactチュートリアル'));
         this.listeners = [];
         TodoDispatcher.register(payload => {
-            const newState = this.reduce(this.todoList, payload);
-            if (newState !== this.todoList) {
-                this.todoList = newState;
+            const newState = this.reduce(this.state, payload);
+            if (newState !== this.state) {
+                this.state = newState;
                 this.listeners.forEach(listener => listener());
             }
         });
@@ -44,12 +44,12 @@ export const todoListStore = new TodoListStore();
 
 class ContentStore {
     constructor() {
-        this.content = '';
+        this.state = '';
         this.listeners = [];
         TodoDispatcher.register(payload => {
-            const newState = this.reduce(this.content, payload);
-            if (newState !== this.content) {
-                this.content = newState;
+            const newState = this.reduce(this.state, payload);
+            if (newState !== this.state) {
+                this.state = newState;
                 this.listeners.forEach(listener => listener());
             }
         });
