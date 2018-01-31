@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import initRender from './actions';
 import App from './component-structure';
+import { todoListStore, contentStore } from './store';
 
 const render = () => {
     ReactDOM.render(<App />, document.getElementById('root'));
 };
 
-initRender(render);
+todoListStore.subscribe(render);
+contentStore.subscribe(render);
 
 render();
