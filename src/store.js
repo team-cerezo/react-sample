@@ -2,12 +2,9 @@ import TodoDispatcher from './dispatcher';
 import ActionTypes from './action-types';
 import { Todo, TodoList } from './models';
 
-class TodoListStore {
-    constructor() {
-        this.state = TodoList.empty()
-            .add(Todo.create('環境構築').setDone(true))
-            .add(Todo.create('JavaScriptチュートリアル'))
-            .add(Todo.create('Reactチュートリアル'));
+class Store {
+    constructor(initialState) {
+        this.state = initialState;
         this.listeners = [];
         TodoDispatcher.register(payload => {
             const newState = this.reduce(this.state, payload);
@@ -16,6 +13,18 @@ class TodoListStore {
                 this.listeners.forEach(listener => listener());
             }
         });
+    }
+    subscribe(listener) {
+        this.listeners.push(listener);
+    }
+}
+
+class TodoListStore extends Store {
+    constructor() {
+        super(TodoList.empty()
+            .add(Todo.create('環境構築').setDone(true))
+            .add(Todo.create('JavaScriptチュートリアル'))
+            .add(Todo.create('Reactチュートリアル')));
     }
     reduce(state, { type, payload }) {
         switch (type) {
@@ -35,24 +44,13 @@ class TodoListStore {
                 return state;
         }
     }
-    subscribe(listener) {
-        this.listeners.push(listener);
-    }
 }
 
 export const todoListStore = new TodoListStore();
 
-class ContentStore {
+class ContentStore extends Store {
     constructor() {
-        this.state = '';
-        this.listeners = [];
-        TodoDispatcher.register(payload => {
-            const newState = this.reduce(this.state, payload);
-            if (newState !== this.state) {
-                this.state = newState;
-                this.listeners.forEach(listener => listener());
-            }
-        });
+        super('');
     }
     reduce(state, { type, payload }) {
         switch (type) {
@@ -66,9 +64,6 @@ class ContentStore {
             default:
                 return state;
         }
-    }
-    subscribe(listener) {
-        this.listeners.push(listener);
     }
 }
 
