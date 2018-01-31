@@ -1,4 +1,4 @@
-import store, { todoListStore, contentStore } from './store';
+import { todoListStore, contentStore } from './store';
 
 let render;
 
@@ -8,8 +8,8 @@ export const updateContent = event => {
 };
 
 export const tryAddTodo = event => {
-    if (store.content !== '' && event.key === 'Enter') {
-        todoListStore.add(store.content);
+    if (contentStore.content !== '' && event.key === 'Enter') {
+        todoListStore.add(contentStore.content);
         contentStore.clear();
         render();
     }
