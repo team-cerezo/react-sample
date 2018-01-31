@@ -1,20 +1,34 @@
-import { todoListStore, contentStore } from './store';
+import TodoDispatcher from './dispatcher';
+import ActionTypes from './action-types';
+import { contentStore } from './store';
 
 export const updateContent = event => {
-    contentStore.update(event.target.value);
+    const content = event.target.value;
+    TodoDispatcher.dispatch({
+        type: ActionTypes.UPDATE_CONTENT,
+        payload: { content }
+    });
 };
 
 export const tryAddTodo = event => {
-    if (contentStore.content !== '' && event.key === 'Enter') {
-        todoListStore.add(contentStore.content);
-        contentStore.clear();
+    const content = contentStore.content;
+    if (content !== '' && event.key === 'Enter') {
+        TodoDispatcher.dispatch({
+            type: ActionTypes.ADD_TODO,
+            payload: { content }
+        });
     }
 };
 
 export const updateStatus = (id, done) => {
-    todoListStore.setDone(id, done);
+    TodoDispatcher.dispatch({
+        type: ActionTypes.SET_DONE,
+        payload: { id, done }
+    });
 };
 
 export const clear = event => {
-    todoListStore.clear();
+    TodoDispatcher.dispatch({
+        type: ActionTypes.CLEAR
+    });
 };

@@ -1,3 +1,5 @@
+import TodoDispatcher from './dispatcher';
+import ActionTypes from './action-types';
 import { Todo, TodoList } from './models';
 
 class TodoListStore {
@@ -7,19 +9,31 @@ class TodoListStore {
             .add(Todo.create('JavaScriptチュートリアル'))
             .add(Todo.create('Reactチュートリアル'));
         this.listeners = [];
+        TodoDispatcher.register(payload => {
+            const newState = this.reduce(this.todoList, payload);
+            if (newState !== this.todoList) {
+                this.todoList = newState;
+                this.listeners.forEach(listener => listener());
+            }
+        });
     }
-    add(content) {
-        const todo = Todo.create(content);
-        this.todoList = this.todoList.add(todo);
-        this.listeners.forEach(listener => listener());
-    }
-    setDone(id, done) {
-        this.todoList = this.todoList.setDone(id, done);
-        this.listeners.forEach(listener => listener());
-    }
-    clear() {
-        this.todoList = this.todoList.clear();
-        this.listeners.forEach(listener => listener());
+    reduce(state, { type, payload }) {
+        switch (type) {
+            case ActionTypes.ADD_TODO: {
+                const { content } = payload;
+                const todo = Todo.create(content);
+                return state.add(todo);
+            }
+            case ActionTypes.SET_DONE: {
+                const { id, done } = payload;
+                return state.setDone(id, done);
+            }
+            case ActionTypes.CLEAR: {
+                return state.clear();
+            }
+            default:
+                return state;
+        }
     }
     subscribe(listener) {
         this.listeners.push(listener);
@@ -32,14 +46,26 @@ class ContentStore {
     constructor() {
         this.content = '';
         this.listeners = [];
+        TodoDispatcher.register(payload => {
+            const newState = this.reduce(this.content, payload);
+            if (newState !== this.content) {
+                this.content = newState;
+                this.listeners.forEach(listener => listener());
+            }
+        });
     }
-    update(content) {
-        this.content = content;
-        this.listeners.forEach(listener => listener());
-    }
-    clear() {
-        this.content = '';
-        this.listeners.forEach(listener => listener());
+    reduce(state, { type, payload }) {
+        switch (type) {
+            case ActionTypes.UPDATE_CONTENT: {
+                const { content } = payload;
+                return content;
+            }
+            case ActionTypes.ADD_TODO: {
+                return '';
+            }
+            default:
+                return state;
+        }
     }
     subscribe(listener) {
         this.listeners.push(listener);
