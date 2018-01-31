@@ -1,33 +1,30 @@
-import { Todo } from './models';
-import store from './store';
+import store, { todoListStore, contentStore } from './store';
 
 let render;
 
 export const updateContent = event => {
-    store.content = event.target.value;
+    contentStore.update(event.target.value);
     render();
 };
 
 export const tryAddTodo = event => {
     if (store.content !== '' && event.key === 'Enter') {
-        const todo = Todo.create(store.content);
-        store.todoList = store.todoList.add(todo);
-        store.content = '';
+        todoListStore.add(store.content);
+        contentStore.clear();
         render();
     }
 };
 
 export const updateStatus = (id, done) => {
-    store.todoList = store.todoList.setDone(id, done);
+    todoListStore.setDone(id, done);
     render();
 };
 
 export const clear = event => {
-    store.todoList = store.todoList.clear();
+    todoListStore.clear();
     render();
 };
 
 export default (h) => {
-  render = h;
+    render = h;
 };
-
