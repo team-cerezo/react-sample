@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ClearButton 描画 1`] = `
+<p>
+  <button
+    onClick={[Function]}
+  >
+    終わったやつ消す
+  </button>
+</p>
+`;
+
+exports[`InputContent 描画 1`] = `
+<p>
+  <input
+    onChange={[Function]}
+    onKeyPress={[Function]}
+    placeholder="やることある？"
+    type="text"
+    value="Hello, world!"
+  />
+</p>
+`;
+
+exports[`TodoComponent 描画 1`] = `
+<li>
+  <label>
+    <input
+      checked={true}
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <span>
+      #
+      123
+       
+    </span>
+  </label>
+</li>
+`;
+
+exports[`TodoListComponent 描画 1`] = `
+<ul>
+  <li>
+    foo
+  </li>
+  <li>
+    bar
+  </li>
+  <li>
+    baz
+  </li>
+</ul>
+`;
