@@ -14,8 +14,7 @@ class TodoListStore extends ReduceStore {
     reduce(state, { type, payload }) {
         switch (type) {
             case ActionTypes.ADD_TODO: {
-                const { content } = payload;
-                const todo = Todo.create(content);
+                const { todo } = payload;
                 return state.add(todo);
             }
             case ActionTypes.SET_DONE: {

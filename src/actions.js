@@ -1,21 +1,22 @@
 import TodoDispatcher from './dispatcher';
 import ActionTypes from './action-types';
 import { contentStore } from './store';
+import { Todo } from './models';
 
-export const updateContent = event => {
-    const content = event.target.value;
+export const updateContent = content => {
     TodoDispatcher.dispatch({
         type: ActionTypes.UPDATE_CONTENT,
         payload: { content }
     });
 };
 
-export const tryAddTodo = event => {
+export const tryAddTodo = () => {
     const content = contentStore.getState();
-    if (content !== '' && event.key === 'Enter') {
+    if (content !== '') {
+        const todo = Todo.create(content);
         TodoDispatcher.dispatch({
             type: ActionTypes.ADD_TODO,
-            payload: { content }
+            payload: { todo }
         });
     }
 };

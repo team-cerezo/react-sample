@@ -4,10 +4,17 @@ export const InputContent = (props) => {
     const content = props.content;
     const updateContent = props.updateContent;
     const tryAddTodo = props.tryAddTodo;
+    const tryAddTodoBridge = (event) => {
+        if (event.key === 'Enter') {
+            tryAddTodo();
+        }
+    };
     return (
         <p>
             <input type="text" placeholder="やることある？" value={content}
-                onChange={updateContent} onKeyPress={tryAddTodo} />
+                onChange={event => updateContent(event.target.value)}
+                onKeyPress={tryAddTodoBridge}
+                autoFocus />
         </p>
     );
 };
