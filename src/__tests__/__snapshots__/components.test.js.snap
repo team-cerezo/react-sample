@@ -13,6 +13,7 @@ exports[`ClearButton 描画 1`] = `
 exports[`InputContent 描画 1`] = `
 <p>
   <input
+    autoFocus={true}
     onChange={[Function]}
     onKeyPress={[Function]}
     placeholder="やることある？"

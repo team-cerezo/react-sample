@@ -28,12 +28,12 @@ describe('InputContent', () => {
                 updateContent={handler1}
                 tryAddTodo={handler2} />
         );
-        input.find('input').simulate('change');
+        input.find('input').simulate('change', { target: { value: 'test' } });
         expect(handler1).toBeCalled();
         expect(handler2).not.toBeCalled();
     });
 
-    test('キーが押されたらtryAddTodoハンドラが呼ばれる', () => {
+    test('Enterキーが押されたらtryAddTodoハンドラが呼ばれる', () => {
         const handler1 = jest.fn();
         const handler2 = jest.fn();
         const input = shallow(
@@ -42,9 +42,23 @@ describe('InputContent', () => {
                 updateContent={handler1}
                 tryAddTodo={handler2} />
         );
-        input.find('input').simulate('keypress');
+        input.find('input').simulate('keypress', { key: 'Enter' });
         expect(handler1).not.toBeCalled();
         expect(handler2).toBeCalled();
+    });
+
+    test('Enterキー以外のキーが押されたらtryAddTodoハンドラが呼ばれる', () => {
+        const handler1 = jest.fn();
+        const handler2 = jest.fn();
+        const input = shallow(
+            <InputContent
+                content={''}
+                updateContent={handler1}
+                tryAddTodo={handler2} />
+        );
+        input.find('input').simulate('keypress', { key: 'NotEnter' });
+        expect(handler1).not.toBeCalled();
+        expect(handler2).not.toBeCalled();
     });
 });
 
