@@ -6,10 +6,7 @@ import { Todo, TodoList } from './models';
 
 class TodoListStore extends ReduceStore {
     getInitialState() {
-        return TodoList.empty()
-            .add(Todo.create('環境構築').setDone(true))
-            .add(Todo.create('JavaScriptチュートリアル'))
-            .add(Todo.create('Reactチュートリアル'));
+        return TodoList.empty();
     }
     reduce(state, { type, payload }) {
         switch (type) {
@@ -21,8 +18,9 @@ class TodoListStore extends ReduceStore {
                 const { id, done } = payload;
                 return state.setDone(id, done);
             }
-            case ActionTypes.CLEAR: {
-                return state.clear();
+            case ActionTypes.LOAD: {
+                const { todoList } = payload;
+                return todoList;
             }
             default:
                 return state;

@@ -2,18 +2,17 @@ import { Todo, TodoList } from '../models';
 
 describe('Todo', () => {
 
-    test('create', () => {
-        const todo = Todo.create('test');
-        expect(todo.id).not.toBeNull();
-        expect(todo.content).toBe('test');
-        expect(todo.done).toBeFalsy();
-    });
-
     test('setDone', () => {
         const todo = new Todo(0, 'test', false).setDone(true);
         expect(todo.id).toBe(0);
         expect(todo.content).toBe('test');
         expect(todo.done).toBe(true);
+    });
+
+    test('fromJson', () => {
+        const todo = Todo.fromJson({ id: 1, content: 'foo', done: true });
+        const expected = new Todo(1, 'foo', true);
+        expect(todo).toEqual(expected);
     });
 });
 
@@ -52,15 +51,16 @@ describe('TodoList', () => {
         expect(todoList).toEqual(expected);
     });
 
-    test('clear', () => {
-        const todoList = new TodoList([
+    test('fromJson', () => {
+        const todoList = TodoList.fromJson([
+            { id: 3, content: 'baz', done: false },
+            { id: 2, content: 'bar', done: false },
+            { id: 1, content: 'foo', done: true }
+        ]);
+        const expected = new TodoList([
             new Todo(3, 'baz', false),
             new Todo(2, 'bar', false),
             new Todo(1, 'foo', true)
-        ]).clear();
-        const expected = new TodoList([
-            new Todo(3, 'baz', false),
-            new Todo(2, 'bar', false)
         ]);
         expect(todoList).toEqual(expected);
     });

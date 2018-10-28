@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 
-import AppContainer from './container';
+import AppContainer from './initializer';
 import { About } from './components';
 
 export default () => (

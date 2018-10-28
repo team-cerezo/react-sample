@@ -7,9 +7,8 @@ class Todo {
     setDone(done) {
         return new Todo(this.id, this.content, done);
     }
-    static idGenerator = 0;
-    static create(content) {
-        return new Todo(++Todo.idGenerator, content, false);
+    static fromJson(json) {
+        return new Todo(json.id, json.content, json.done);
     }
 }
 
@@ -31,8 +30,8 @@ class TodoList {
             return todo;
         }));
     }
-    clear() {
-        return new TodoList(this.list.filter(todo => todo.done === false));
+    static fromJson(json) {
+        return new TodoList(json.map(a => Todo.fromJson(a)));
     }
 }
 
