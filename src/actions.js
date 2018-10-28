@@ -10,50 +10,44 @@ export const updateContent = content => {
     });
 };
 
-export const tryAddTodo = () => {
+export const tryAddTodo = async () => {
     const content = contentStore.getState();
     if (content !== '') {
         const body = new URLSearchParams();
         body.append('content', content);
-        fetch('/api/todolist', { method: 'POST', body })
-            .then(response => response.json())
-            .then(json => Todo.fromJson(json))
-            .then(todo => TodoDispatcher.dispatch({
-                type: ActionTypes.ADD_TODO,
-                payload: { todo }
-            }));
+        const response = await fetch('/api/todolist', { method: 'POST', body });
+        const json = await response.json();
+        const todo = Todo.fromJson(json);
+        return TodoDispatcher.dispatch({
+            type: ActionTypes.ADD_TODO,
+            payload: { todo }
+        });
     }
+    return Promise.resolve();
 };
 
-export const updateStatus = (id, done) => {
+export const updateStatus = async (id, done) => {
     const body = new URLSearchParams();
     body.append('done', done);
-    fetch(`/api/todolist/${id}`, { method: 'POST', body });
-    TodoDispatcher.dispatch({
+    await fetch(`/api/todolist/${id}`, { method: 'POST', body });
+    return TodoDispatcher.dispatch({
         type: ActionTypes.SET_DONE,
         payload: { id, done }
     });
 };
 
-export const clear = event =>
-    fetch(`/api/todolist/_delete`, { method: 'POST' })
-        .then(() => fetch('/api/todolist'))
-        .then(response => response.json())
-        .then(json => {
-            const todoList = TodoList.fromJson(json);
-            TodoDispatcher.dispatch({
-                type: ActionTypes.LOAD,
-                payload: { todoList }
-            });
-        });
+export const clear = async event => {
+    await fetch(`/api/todolist/_delete`, { method: 'POST' });
+    return load();
+};
 
-export const load = () =>
-    fetch('/api/todolist')
-        .then(response => response.json())
-        .then(json => {
-            const todoList = TodoList.fromJson(json);
-            TodoDispatcher.dispatch({
-                type: ActionTypes.LOAD,
-                payload: { todoList }
-            });
-        });
+export const load = async () => {
+    const response = await fetch('/api/todolist');
+    const json = await response.json();
+    const todoList = TodoList.fromJson(json);
+    return TodoDispatcher.dispatch({
+        type: ActionTypes.LOAD,
+        payload: { todoList }
+    });
+};
+
