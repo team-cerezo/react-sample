@@ -2,7 +2,7 @@ import { ReduceStore } from 'flux/utils';
 
 import TodoDispatcher from './dispatcher';
 import ActionTypes from './action-types';
-import { Todo, TodoList } from './models';
+import { TodoList } from './models';
 
 class TodoListStore extends ReduceStore {
     getInitialState() {

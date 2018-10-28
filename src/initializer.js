@@ -4,9 +4,6 @@ import {
 } from './actions';
 
 class Initializer extends AppContainer {
-    constructor(props, context) {
-        super(props, context);
-    }
     componentDidMount() {
         load();
     }
